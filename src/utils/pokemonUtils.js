@@ -1,10 +1,14 @@
 export function pickRandomPokemons(data, amount) {
   const selectedPokemons = [];
   
-  for (let index = 0; index < amount; index++) {
-    const pokemonIndex = Math.floor((Math.random() * data.length) + 1);
-    selectedPokemons.push(data[pokemonIndex])
-  }
+  while (selectedPokemons.length < amount) {
+    const pokemonIndex = Math.floor(Math.random() * data.length);
+    const randomPokemon = data[pokemonIndex];
 
+    if (!selectedPokemons.some(pokemon => pokemon.name === randomPokemon.name)) {
+      selectedPokemons.push(randomPokemon);
+    }
+  }
+  
   return selectedPokemons
 }
