@@ -1,30 +1,25 @@
 import { useState, useEffect } from 'react';
-import './App.css'
 import useData from './hooks/useData';
 import usePokemonData from './hooks/usePokemonData';
 import { pickRandomPokemons } from './utils/pokemonUtils';
+import PokeCard from './components/PokeCard/PokeCard.component';
 
 function App() {
   const data = useData('https://pokeapi.co/api/v2/pokemon?limit=151&offset=0');
   // console.log(data);
 
   const [selectedPokemons, setSelectedPokemons] = useState(null);
-  // const selectedPokemons = data ? pickRandomPokemons(data.results, 3) : null;
 
-  // mb use ref here?
   useEffect(() => {
     if (data) {
       setSelectedPokemons(pickRandomPokemons(data.results, 3));
     }
   }, [data]);
 
-  console.log(selectedPokemons);
-
   const pokemonsData = usePokemonData(selectedPokemons);
   console.log(pokemonsData);
 
 
-  // fetch pokemon data - try to rewrite it using useEffect 
   // start component
   // header
   // card
@@ -33,6 +28,15 @@ function App() {
   return (
     <>
       Hello World!
+      
+      <section className='poke-cards-section'>
+        {pokemonsData && pokemonsData.map((poke, index) => (
+          <PokeCard 
+            pokeData={poke}
+            key={index}
+          />
+        ))}
+      </section>
     </>
   )
 }
