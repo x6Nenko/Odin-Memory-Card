@@ -12,3 +12,15 @@ export function pickRandomPokemons(data, amount) {
   
   return selectedPokemons
 }
+
+export function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    let j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+
+  console.log(array);
+
+  // return NEW array so react can re-render card component
+  return [...array];
+}
