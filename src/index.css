@@ -8,4 +8,12 @@
   display: flex;
   gap: 80px;
   justify-content: center;
+  margin-top: 100px;
+}
+
+.score-section {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  margin-top: 16px;
 }

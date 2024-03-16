@@ -19,8 +19,11 @@ export function shuffleArray(array) {
     [array[i], array[j]] = [array[j], array[i]];
   }
 
-  console.log(array);
-
   // return NEW array so react can re-render card component
   return [...array];
+}
+
+export function isDuplicated(array) {
+  const duplicates = array.filter((item, index) => array.indexOf(item) !== index);
+  return duplicates.length > 0 ? true : false;
 }

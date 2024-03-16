@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import useData from './hooks/useData';
 import usePokemonData from './hooks/usePokemonData';
-import { pickRandomPokemons, shuffleArray } from './utils/pokemonUtils';
+import { pickRandomPokemons, shuffleArray, isDuplicated } from './utils/pokemonUtils';
 import PokeCard from './components/PokeCard/PokeCard.component';
 
 function App() {
@@ -14,6 +14,7 @@ function App() {
 
   const [currentScore, setCurrentScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
+  const [memorizedPokemons, setMemorizedPokemons] = useState([]);
 
   useEffect(() => {
     if (data) {
@@ -31,9 +32,31 @@ function App() {
   }, [pokemonsDataResult]);
 
   function clickHandler(name) {
-    console.log(name + " was clicked");
+    setMemorizedPokemons([...memorizedPokemons, name])
+
+    if (isDuplicated([...memorizedPokemons, name])) {
+      // useState is a snapshot of current render, so memorizedPokemons will be updated only at next render
+      // due to this reason I also pass name of previously clicked pokemon to check for duplicates without
+      // waiting next re-render
+      console.log("Duplicated... try again.");
+      setMemorizedPokemons([]);
+      return setCurrentScore(0);
+    }
+
+    if ([...memorizedPokemons, name].length === 5) {
+      console.log("Well done!");
+      setCurrentScore(0);
+      setMemorizedPokemons([]);
+      return setBestScore(0);
+    }
+
+    setCurrentScore(prevScore => prevScore + 1);
+
+    if (currentScore >= bestScore) {
+      setBestScore(prevScore => prevScore + 1);
+    }
+
     setPokemonsData(shuffleArray(pokemonsData));
-    console.log(pokemonsData);
   }
 
 
@@ -43,7 +66,10 @@ function App() {
 
   return (
     <>
-      Hello World!
+      <section className='score-section'>
+        <p>Current score: {currentScore}</p>
+        <p>Best score: {bestScore}</p>
+      </section>
       
       <section className='poke-cards-section'>
         {pokemonsData && pokemonsData.map((poke, index) => (
