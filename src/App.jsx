@@ -16,12 +16,12 @@ function App() {
   const [bestScore, setBestScore] = useState(0);
   const [memorizedPokemons, setMemorizedPokemons] = useState([]);
 
-  useEffect(() => {
-    if (data) {
-      setSelectedPokemons(pickRandomPokemons(data.results, 5));
+  // useEffect(() => {
+  //   if (data) {
+  //     setSelectedPokemons(pickRandomPokemons(data.results, 10));
       
-    }
-  }, [data]);
+  //   }
+  // }, [data]);
 
   const pokemonsDataResult = usePokemonData(selectedPokemons);
 
@@ -36,14 +36,14 @@ function App() {
 
     if (isDuplicated([...memorizedPokemons, name])) {
       // useState is a snapshot of current render, so memorizedPokemons will be updated only at next render
-      // due to this reason I also pass name of previously clicked pokemon to check for duplicates without
+      // due to this reason I also pass name of clicked pokemon in this stage to check for duplicates without
       // waiting next re-render
       console.log("Duplicated... try again.");
       setMemorizedPokemons([]);
       return setCurrentScore(0);
     }
 
-    if ([...memorizedPokemons, name].length === 5) {
+    if ([...memorizedPokemons, name].length === selectedPokemons.length) {
       console.log("Well done!");
       setCurrentScore(0);
       setMemorizedPokemons([]);
@@ -59,7 +59,20 @@ function App() {
     setPokemonsData(shuffleArray(pokemonsData));
   }
 
+  function startBtnHandler(event) {
+    let difficulty;
 
+    event.target.value === "easy" ? difficulty = 6 : 
+    event.target.value === "medium" ? difficulty = 10 :
+    event.target.value === "hard" ? difficulty = 16 : null;
+
+    if (data) {
+      setSelectedPokemons(pickRandomPokemons(data.results, difficulty));
+    }
+  }
+
+
+  // loading
   // start component
   // header
   // result
@@ -69,6 +82,12 @@ function App() {
       <section className='score-section'>
         <p>Current score: {currentScore}</p>
         <p>Best score: {bestScore}</p>
+      </section>
+
+      <section className='start-screen'>
+        <button value={"easy"} onClick={(event) => startBtnHandler(event)}>Easy</button>
+        <button value={"medium"} onClick={(event) => startBtnHandler(event)}>Medium</button>
+        <button value={"hard"} onClick={(event) => startBtnHandler(event)}>Hard</button>
       </section>
       
       <section className='poke-cards-section'>
