@@ -21,6 +21,7 @@
 
 .start-screen {
   display: flex;
+  gap: 16px;
   justify-content: center;
   margin-top: 16px;
 }

@@ -16,13 +16,6 @@ function App() {
   const [bestScore, setBestScore] = useState(0);
   const [memorizedPokemons, setMemorizedPokemons] = useState([]);
 
-  // useEffect(() => {
-  //   if (data) {
-  //     setSelectedPokemons(pickRandomPokemons(data.results, 10));
-      
-  //   }
-  // }, [data]);
-
   const pokemonsDataResult = usePokemonData(selectedPokemons);
 
   useEffect(() => {
@@ -31,7 +24,7 @@ function App() {
     }
   }, [pokemonsDataResult]);
 
-  function clickHandler(name) {
+  function clickCardHandler(name) {
     setMemorizedPokemons([...memorizedPokemons, name])
 
     if (isDuplicated([...memorizedPokemons, name])) {
@@ -47,7 +40,7 @@ function App() {
       console.log("Well done!");
       setCurrentScore(0);
       setMemorizedPokemons([]);
-      return setBestScore(0);
+      return setBestScore(selectedPokemons.length);
     }
 
     setCurrentScore(prevScore => prevScore + 1);
@@ -67,12 +60,14 @@ function App() {
     event.target.value === "hard" ? difficulty = 16 : null;
 
     if (data) {
+      setCurrentScore(0);
+      setBestScore(0);
+      setMemorizedPokemons([]);
       setSelectedPokemons(pickRandomPokemons(data.results, difficulty));
     }
   }
 
 
-  // loading
   // start component
   // header
   // result
@@ -95,7 +90,7 @@ function App() {
           <PokeCard 
             pokeData={poke}
             key={`${poke.name} ${index}`}
-            handleClick={() => clickHandler(poke.name)}
+            handleClick={() => clickCardHandler(poke.name)}
           />
         ))}
       </section>
