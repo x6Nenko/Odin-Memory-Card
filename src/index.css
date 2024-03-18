@@ -19,9 +19,14 @@
   margin-top: 16px;
 }
 
-.start-screen {
+.difficulty-section {
   display: flex;
   gap: 16px;
   justify-content: center;
   margin-top: 16px;
+}
+
+.start-screen {
+  width: fit-content;
+  margin: 16px auto;
 }

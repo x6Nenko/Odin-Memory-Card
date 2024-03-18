@@ -15,12 +15,14 @@ function App() {
   const [currentScore, setCurrentScore] = useState(0);
   const [bestScore, setBestScore] = useState(0);
   const [memorizedPokemons, setMemorizedPokemons] = useState([]);
+  const [isStart, setIsStart] = useState(true);
 
   const pokemonsDataResult = usePokemonData(selectedPokemons);
 
   useEffect(() => {
     if (pokemonsDataResult) {
       setPokemonsData(pokemonsDataResult);
+      setIsStart(false);
     }
   }, [pokemonsDataResult]);
 
@@ -79,11 +81,18 @@ function App() {
         <p>Best score: {bestScore}</p>
       </section>
 
-      <section className='start-screen'>
+      <section className='difficulty-section'>
         <button value={"easy"} onClick={(event) => startBtnHandler(event)}>Easy</button>
         <button value={"medium"} onClick={(event) => startBtnHandler(event)}>Medium</button>
         <button value={"hard"} onClick={(event) => startBtnHandler(event)}>Hard</button>
       </section>
+
+      {isStart && 
+        <section className='start-screen'>
+          <h1>Choose a difficulty to start/restart the game.</h1>
+          <p>Game rules: pick all cards one by one without repeating.</p>
+        </section>
+      }
       
       <section className='poke-cards-section'>
         {pokemonsData && pokemonsData.map((poke, index) => (
