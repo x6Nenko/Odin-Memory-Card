@@ -1,13 +1,15 @@
 import { useState, useEffect } from 'react';
+import { pickRandomPokemons, shuffleArray, isDuplicated } from './utils/pokemonUtils';
 import useData from './hooks/useData';
 import usePokemonData from './hooks/usePokemonData';
-import { pickRandomPokemons, shuffleArray, isDuplicated } from './utils/pokemonUtils';
+
 import PokeCard from './components/PokeCard/PokeCard.component';
+
+import animatedBg from './assets/pixelbg.mp4'
+import arrowUp from './assets/arrow-up-short.svg'
 
 function App() {
   const data = useData('https://pokeapi.co/api/v2/pokemon?limit=151&offset=0');
-  // console.log(data);
-  console.log("HIT");
 
   const [selectedPokemons, setSelectedPokemons] = useState(null);
   const [pokemonsData, setPokemonsData] = useState();
@@ -42,7 +44,7 @@ function App() {
       console.log("Well done!");
       setCurrentScore(0);
       setMemorizedPokemons([]);
-      return setBestScore(selectedPokemons.length);
+      return setBestScore(selectedPokemons.length + ' 🏆');
     }
 
     setCurrentScore(prevScore => prevScore + 1);
@@ -59,7 +61,7 @@ function App() {
 
     event.target.value === "easy" ? difficulty = 6 : 
     event.target.value === "medium" ? difficulty = 10 :
-    event.target.value === "hard" ? difficulty = 16 : null;
+    event.target.value === "hard" ? difficulty = 18 : null;
 
     if (data) {
       setCurrentScore(0);
@@ -69,13 +71,12 @@ function App() {
     }
   }
 
-
-  // start component
-  // header
-  // result
-
   return (
-    <>
+    <div className='main-wrapper'>
+      <video autoPlay muted loop className='animated-bg'>
+        <source src={animatedBg} type="video/mp4" />
+      </video>
+
       <section className='score-section'>
         <p>Current score: {currentScore}</p>
         <p>Best score: {bestScore}</p>
@@ -89,8 +90,14 @@ function App() {
 
       {isStart && 
         <section className='start-screen'>
+          <img 
+            src={arrowUp}
+            alt=''
+            width={24}
+            height={24}
+          />
           <h1>Choose a difficulty to start/restart the game.</h1>
-          <p>Game rules: pick all cards one by one without repeating.</p>
+          <p><u>Game rules:</u> pick all cards one by one without repeating.</p>
         </section>
       }
       
@@ -103,7 +110,7 @@ function App() {
           />
         ))}
       </section>
-    </>
+    </div>
   )
 }
 

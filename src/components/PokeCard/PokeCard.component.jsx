@@ -10,7 +10,9 @@ const PokeCard = (poke) => {
         src={poke.pokeData.sprites.other.dream_world.front_default}
         alt=''
       />
-      <h2>{poke.pokeData.name}</h2>
+      <div className="card-footer">
+        <h2>{poke.pokeData.name}</h2>
+      </div>
     </article>
   )
 }
