@@ -12,7 +12,6 @@ function useData(url) {
         .then(json => {
           if (!ignore) {
             setData(json);
-            console.log(json);
           }
         });
 
